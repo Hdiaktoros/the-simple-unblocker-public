@@ -23,23 +23,39 @@ html5_1 = next(os.walk(outdir + html5gamesin))[1]
 html5_2 = ["<h2>HTML5 Games</h2>"]
 
 # Generate HTML code for HTML5 list
-for x in range(0, len(html5_1)):
-	html5_2.append(alist % (outdir + html5gamesin + html5_1[x] + "/", (html5names.get(html5_1[x]) if (html5_1[x] in html5names) else html5_1[x].capitalize())))
+html5_2.extend(
+	alist
+	% (
+		outdir + html5gamesin + html5_1[x] + "/",
+		(
+			html5names.get(html5_1[x])
+			if (html5_1[x] in html5names)
+			else html5_1[x].capitalize()
+		),
+	)
+	for x in range(len(html5_1))
+)
 
 # Make GBA lists
 gba_1 = list(chain.from_iterable([[os.path.basename(x) for x in glob.glob(outdir + rarchgamesin + romdir + y)] for y in pregba]))
 gba_2 = ["\n<h2>Gameboy Advance</h2>", alist % (outdir + rarchgamesin + "?core=mgba", "Upload ROM")]
 
 # Generate HTML code for GBA list
-for x in range(0, len(gba_1)):
-	gba_2.append(alist % (outdir + rarchgamesin + "?core=mgba&rom=" + gba_1[x], os.path.splitext(gba_1[x])[0].capitalize()))
+gba_2.extend(
+	alist
+	% (
+		outdir + rarchgamesin + "?core=mgba&rom=" + gba_1[x],
+		os.path.splitext(gba_1[x])[0].capitalize(),
+	)
+	for x in range(len(gba_1))
+)
 
 # Make Genesis lists
 gen_1 = list(chain.from_iterable([[os.path.basename(x) for x in glob.glob(outdir + rarchgamesin + romdir + y)] for y in pregen]))
 gen_2 = ["\n<h2>Genesis / Master System</h2>", alist % (outdir + rarchgamesin + "?core=genesis_plus_gx", "Upload ROM")]
 
 # Generate HTML code for Genesis list
-for x in range(0, len(gen_1)):
+for x in range(len(gen_1)):
 	gen_2.append(alist % (outdir + rarchgamesin + "?core=genesis_plus_gx&rom=" + gen_1[x], os.path.splitext(gen_1[x])[0].capitalize()))
 
 # Make N64 lists
@@ -47,7 +63,7 @@ n64_1 = list(chain.from_iterable([[os.path.basename(x) for x in glob.glob(outdir
 n64_2 = ["\n<h2>Nintendo 64</h2>", alist % (outdir + rarchgamesin + "?core=mupen64plus_next", "Upload ROM")]
 
 # Generate HTML code for N64 list
-for x in range(0, len(n64_1)):
+for x in range(len(n64_1)):
 	n64_2.append(alist % (outdir + rarchgamesin + "?core=mupen64plus_next&rom=" + n64_1[x], os.path.splitext(n64_1[x])[0].capitalize()))
 
 # Make NES lists
@@ -55,7 +71,7 @@ nes_1 = list(chain.from_iterable([[os.path.basename(x) for x in glob.glob(outdir
 nes_2 = ["\n<h2>NES</h2>", alist % (outdir + rarchgamesin + "?core=nestopia", "Upload ROM")]
 
 # Generate HTML code for NES list
-for x in range(0, len(nes_1)):
+for x in range(len(nes_1)):
 	nes_2.append(alist % (outdir + rarchgamesin + "?core=nestopia&rom=" + nes_1[x], os.path.splitext(nes_1[x])[0].capitalize()))
 
 # Make SNES lists
@@ -63,7 +79,7 @@ snes_1 = list(chain.from_iterable([[os.path.basename(x) for x in glob.glob(outdi
 snes_2 = ["\n<h2>Super Nintendo</h2>", alist % (outdir + rarchgamesin + "?core=snes9x", "Upload ROM")]
 
 # Generate HTML code for SNES list
-for x in range(0, len(snes_1)):
+for x in range(len(snes_1)):
 	snes_2.append(alist % (outdir + rarchgamesin + "?core=snes9x&rom=" + snes_1[x], os.path.splitext(snes_1[x])[0].capitalize()))
 
 # Make flash lists
@@ -72,8 +88,14 @@ flash_1 = ['1on1soccer.swf', '3dtanks.swf', 'abobosbigadventure.swf', 'achieveme
 flash_2 = ["\n<h2>Flash Games</h2>", alist % (outdir + flashgamesin, "Upload SWF")]
 
 # Generate HTML code for flash list
-for x in range(0, len(flash_1)):
-	flash_2.append(alist % (outdir + flashgamesin + "?swf=" + flash_1[x], os.path.splitext(flash_1[x])[0].capitalize()))
+for item in flash_1:
+	flash_2.append(
+		alist
+		% (
+			outdir + flashgamesin + "?swf=" + item,
+			os.path.splitext(item)[0].capitalize(),
+		)
+	)
 
 
 
